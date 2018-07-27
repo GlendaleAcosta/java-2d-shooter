@@ -6,10 +6,15 @@ public class Game extends Canvas implements Runnable{
     private static final long serialVersionUID = 1L;
     private boolean isRunning = false;
     private Thread thread;
+    private Handler handler;
 
     public Game() {
         new Window(1000, 563, "Wizard Game", this);
         start();
+
+        handler  = new Handler();
+        handler.addObject(new Box(100, 100));
+        handler.addObject(new Box(200, 100));
     }
 
     private void start() {
@@ -57,10 +62,13 @@ public class Game extends Canvas implements Runnable{
 
     public void tick() {
         // gets updated 60x a second
+        handler.tick();
     }
 
     public void render() {
         // gets updated a couple 1000 times a second
+
+        // Preload 3 frames in every iteration to make game run smoothly
         BufferStrategy bs = this.getBufferStrategy();
         if (bs == null) {
             this.createBufferStrategy(3);
@@ -68,9 +76,11 @@ public class Game extends Canvas implements Runnable{
         }
 
         Graphics g = bs.getDrawGraphics();
-        
-        g.setColor(Color.red);
+
+        g.setColor(Color.BLACK);
         g.fillRect(0,0,1000, 563);
+
+        handler.render(g);
 
         g.dispose();
         bs.show();
