@@ -24,7 +24,7 @@ public class KeyInput extends KeyAdapter {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         for(int i = 0; i < handler.objects.size(); i++) {
-            GameObject tempObject = handler.objects.get(i);d
+            GameObject tempObject = handler.objects.get(i);
             if (tempObject.getId() == ID.Player) {
                 if (key == KeyEvent.VK_W) handler.setUp(false);
                 if (key == KeyEvent.VK_S) handler.setDown(false);

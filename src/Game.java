@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 public class Game extends Canvas implements Runnable{
 
@@ -7,6 +8,7 @@ public class Game extends Canvas implements Runnable{
     private boolean isRunning = false;
     private Thread thread;
     private Handler handler;
+    private BufferedImage level = null;
 
     public Game() {
         new Window(1000, 563, "Wizard Game", this);
@@ -14,6 +16,10 @@ public class Game extends Canvas implements Runnable{
 
         handler  = new Handler();
         this.addKeyListener(new KeyInput(handler));
+
+        BufferedImageLoader loader = new BufferedImageLoader();
+        BufferedImage imageOfLevel = loader.loadImage("/wizard_level.png");
+        loadLevel(imageOfLevel);
 
         handler.addObject(new Wizard(100, 100, ID.Player, handler));
     }
@@ -85,6 +91,23 @@ public class Game extends Canvas implements Runnable{
 
         g.dispose();
         bs.show();
+    }
+
+    private void loadLevel(BufferedImage image) {
+        int w = image.getWidth();
+        int h = image.getHeight();
+        for(int x = 0; x < w; x++) {
+            for(int y = 0; y < h; y++) {
+                int pixel = image.getRGB(x, y);
+                int red = (pixel >> 16) & 0xff;
+                int green = (pixel >> 8) & 0xff;
+                int blue = (pixel) & 0xff;
+
+                if (red == 255) {
+                    handler.addObject(new Block(x * 32, y * 32, ID.Block));
+                }
+            }
+        }
     }
 
     public static void main(String args[]) {
