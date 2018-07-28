@@ -1,3 +1,5 @@
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -9,12 +11,14 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     private Handler handler;
     private BufferedImage level = null;
+    private Camera camera;
 
     public Game() {
         new Window(1000, 563, "Wizard Game", this);
         start();
 
         handler  = new Handler();
+        camera = new Camera(0,0);
         this.addKeyListener(new KeyInput(handler));
 
         BufferedImageLoader loader = new BufferedImageLoader();
@@ -69,6 +73,13 @@ public class Game extends Canvas implements Runnable{
 
     public void tick() {
         // gets updated 60x a second
+
+        for(int i = 0; i < handler.objects.size(); i++) {
+            if (handler.objects.get(i).getId() == ID.Player) {
+
+                camera.tick(handler.objects.get(i));
+            }
+        }
         handler.tick();
     }
 
@@ -83,12 +94,19 @@ public class Game extends Canvas implements Runnable{
         }
 
         Graphics g = bs.getDrawGraphics();
+        Graphics2D g2d = (Graphics2D) g;
+        /// DRAW HERE ////////////////////////////////////////////
 
         g.setColor(Color.BLACK);
         g.fillRect(0,0,1000, 563);
 
+        g2d.translate(-camera.getX(), -camera.getY());
+
         handler.render(g);
 
+        g2d.translate(camera.getX(), camera.getY());
+
+        //////////////////////////////////////////////////////////
         g.dispose();
         bs.show();
     }
