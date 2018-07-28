@@ -13,6 +13,8 @@ public class Wizard extends GameObject {
         x += velX;
         y += velY;
 
+        collision();
+
         // Movement
         if (handler.isUp()) {
             velY = -5;
@@ -30,6 +32,19 @@ public class Wizard extends GameObject {
             velX = -5;
         } else if (!handler.isRight()) velX = 0;
     }
+
+    private void collision() {
+        for(int i = 0; i < handler.objects.size(); i++) {
+            GameObject tempObject = handler.objects.get(i);
+            if (tempObject.getId() == ID.Block) {
+                if (getBounds().intersects(tempObject.getBounds())) {
+                    x += velX * -1;
+                    y += velY * -1;
+                }
+            }
+        }
+    }
+
 
     @Override
     public void render(Graphics g) {
