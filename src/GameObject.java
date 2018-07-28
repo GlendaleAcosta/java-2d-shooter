@@ -9,6 +9,7 @@ public abstract class GameObject {
     public GameObject(int x, int y, ID id) {
         this.x = x;
         this.y = y;
+        this.id = id;
     }
 
     public abstract void tick();
