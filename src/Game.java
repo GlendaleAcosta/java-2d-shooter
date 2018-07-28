@@ -14,8 +14,8 @@ public class Game extends Canvas implements Runnable{
     private BufferedImage spriteSheetImg = null;
     private BufferedImage floor = null;
     private SpriteSheet sprites;
-
     private Camera camera;
+    public int hp = 100;
 
     public Game() {
         new Window(1000, 563, "Wizard Game", this);
@@ -120,6 +120,14 @@ public class Game extends Canvas implements Runnable{
 
         g2d.translate(camera.getX(), camera.getY());
 
+        g.setColor(Color.gray);
+        g.fillRect(5, 5, 200, 32);
+        g.setColor(Color.green);
+        g.fillRect(5, 5, hp* 2, 32);
+        g.setColor(Color.black);
+        g.drawRect(5, 5, 200, 32);
+
+
         //////////////////////////////////////////////////////////
         g.dispose();
         bs.show();
@@ -139,8 +147,8 @@ public class Game extends Canvas implements Runnable{
                     handler.addObject(new Block(x * 32, y * 32, ID.Block, sprites));
                 }
                 if (blue == 255) {
-
-                    handler.addObject(new Wizard(x * 32, y * 32, ID.Player, handler, sprites));
+s
+                    handler.addObject(new Wizard(x * 32, y * 32, ID.Player, handler, this, sprites));
                 }
                 if (green == 255) {
                     handler.addObject(new Enemy(x * 32, y * 32, ID.Enemy, handler, sprites));

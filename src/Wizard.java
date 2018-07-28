@@ -5,10 +5,12 @@ public class Wizard extends GameObject {
 
     private Handler handler;
     private BufferedImage wizardImg;
+    private Game game;
 
-    public Wizard(int x, int y, ID id, Handler handler, SpriteSheet sprites) {
+    public Wizard(int x, int y, ID id, Handler handler, Game game, SpriteSheet sprites) {
         super(x, y, id, sprites);
         this.handler = handler;
+        this.game = game;
         wizardImg = sprites.grabImage(1, 1, 32, 48);
     }
 
@@ -46,6 +48,12 @@ public class Wizard extends GameObject {
                     y += velY * -1;
                 }
             }
+            if (tempObject.getId() == ID.Enemy) {
+                if (getBounds().intersects(tempObject.getBounds())) {
+                    game.hp--;
+                }
+            }
+
         }
     }
 
