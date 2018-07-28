@@ -5,8 +5,9 @@ public abstract class GameObject {
     protected int x, y;
     protected float velX = 0, velY = 0;
     protected ID id;
+    protected SpriteSheet sprites;
 
-    public GameObject(int x, int y, ID id) {
+    public GameObject(int x, int y, ID id, SpriteSheet sprites) {
         this.x = x;
         this.y = y;
         this.id = id;

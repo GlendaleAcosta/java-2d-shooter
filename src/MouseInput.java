@@ -5,10 +5,12 @@ public class MouseInput extends MouseAdapter {
 
     private Handler handler;
     private Camera camera;
+    private SpriteSheet sprites;
 
-    public MouseInput(Handler handler, Camera camera) {
+    public MouseInput(Handler handler, Camera camera, SpriteSheet sprites) {
         this.handler = handler;
         this.camera = camera;
+        this.sprites = sprites;
     }
 
     public void mousePressed(MouseEvent e) {
@@ -19,7 +21,7 @@ public class MouseInput extends MouseAdapter {
             GameObject tempObject = handler.objects.get(i);
 
             if (tempObject.getId() == ID.Player) {
-                handler.addObject(new Bullet(tempObject.getX() + 16, tempObject.getY() + 24, ID.Bullet, handler, mx, my));
+                handler.addObject(new Bullet(tempObject.getX() + 16, tempObject.getY() + 24, ID.Bullet, handler, mx, my, sprites));
             }
         }
     }

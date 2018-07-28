@@ -1,8 +1,12 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Block extends GameObject {
-    public Block(int x, int y, ID id) {
-        super(x, y, id);
+
+    private BufferedImage blockImage;
+    public Block(int x, int y, ID id, SpriteSheet sprites) {
+        super(x, y, id, sprites);
+        blockImage = sprites.grabImage(5, 2, 32, 32);
     }
 
     @Override
@@ -12,8 +16,7 @@ public class Block extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.PINK);
-        g.fillRect(x, y, 32, 32);
+        g.drawImage(blockImage, x, y, null);
     }
 
     @Override

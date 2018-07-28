@@ -11,6 +11,10 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     private Handler handler;
     private BufferedImage level = null;
+    private BufferedImage spriteSheetImg = null;
+    private BufferedImage floor = null;
+    private SpriteSheet sprites;
+
     private Camera camera;
 
     public Game() {
@@ -20,10 +24,16 @@ public class Game extends Canvas implements Runnable{
         handler  = new Handler();
         camera = new Camera(0,0);
         this.addKeyListener(new KeyInput(handler));
-        this.addMouseListener(new MouseInput(handler, camera));
 
         BufferedImageLoader loader = new BufferedImageLoader();
         BufferedImage imageOfLevel = loader.loadImage("/Wizard_Level2.png");
+        spriteSheetImg = loader.loadImage("/sprite_sheet.png");
+
+        sprites = new SpriteSheet(spriteSheetImg);
+
+        floor = sprites.grabImage(4, 2, 32, 32);
+
+        this.addMouseListener(new MouseInput(handler, camera, sprites));
         loadLevel(imageOfLevel);
     }
 
@@ -96,11 +106,16 @@ public class Game extends Canvas implements Runnable{
         Graphics2D g2d = (Graphics2D) g;
         /// DRAW HERE ////////////////////////////////////////////
 
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0,1000, 563);
+//        g.setColor(Color.BLACK);
+//        g.fillRect(0,0,1000, 563);
 
         g2d.translate(-camera.getX(), -camera.getY());
 
+        for(int x = 0; x < 30 * 72; x+=32) {
+            for(int y = 0; y < 30 * 72; y+=32) {
+                g.drawImage(floor, x, y, null);
+            }
+        }
         handler.render(g);
 
         g2d.translate(camera.getX(), camera.getY());
@@ -121,14 +136,14 @@ public class Game extends Canvas implements Runnable{
                 int blue = (pixel) & 0xff;
 
                 if (red == 255) {
-                    handler.addObject(new Block(x * 32, y * 32, ID.Block));
+                    handler.addObject(new Block(x * 32, y * 32, ID.Block, sprites));
                 }
                 if (blue == 255) {
 
-                    handler.addObject(new Wizard(x * 32, y * 32, ID.Player, handler));
+                    handler.addObject(new Wizard(x * 32, y * 32, ID.Player, handler, sprites));
                 }
                 if (green == 255) {
-                    handler.addObject(new Enemy(x * 32, y * 32, ID.Enemy, handler));
+                    handler.addObject(new Enemy(x * 32, y * 32, ID.Enemy, handler, sprites));
                 }
             }
         }

@@ -1,11 +1,15 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Wizard extends GameObject {
 
-    Handler handler;
-    public Wizard(int x, int y, ID id, Handler handler) {
-        super(x, y, id);
+    private Handler handler;
+    private BufferedImage wizardImg;
+
+    public Wizard(int x, int y, ID id, Handler handler, SpriteSheet sprites) {
+        super(x, y, id, sprites);
         this.handler = handler;
+        wizardImg = sprites.grabImage(1, 1, 32, 48);
     }
 
     @Override
@@ -48,8 +52,7 @@ public class Wizard extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.blue);
-        g.fillRect(x, y, 32, 48);
+        g.drawImage(wizardImg, x, y, null);
     }
 
     @Override

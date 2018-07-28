@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Enemy extends GameObject {
@@ -7,10 +8,12 @@ public class Enemy extends GameObject {
     Random r = new Random();
     int choose = 0;
     int hp = 100;
+    private BufferedImage enemyImg;
 
-    public Enemy(int x, int y, ID id, Handler handler) {
-        super(x, y, id);
+    public Enemy(int x, int y, ID id, Handler handler, SpriteSheet sprites) {
+        super(x, y, id, sprites);
         this.handler = handler;
+        enemyImg =  sprites.grabImage(4, 1, 32, 32);
     }
 
     @Override
@@ -53,13 +56,7 @@ public class Enemy extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.yellow);
-        g.fillRect(x, y, 32, 32);
-
-
-        Graphics2D g2d = (Graphics2D) g;
-        g.setColor(Color.green);
-        g2d.draw(getBoundsBig());
+        g.drawImage(enemyImg, x, y, null);
     }
 
 
